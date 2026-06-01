@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0a1a0f" />
+  <meta name="description" content="GreenRAG — A RAG-based tool for assessing and optimizing the sustainability of cloud AI infrastructure." />
+  <title>GreenRAG</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #060e08;
+      --surface: #0d1f11;
+      --border: #1a3320;
+      --green-dim: #2d6e3e;
+      --green: #3fa85f;
+      --green-bright: #5cdb8a;
+      --green-glow: rgba(63, 168, 95, 0.15);
+      --text: #d4e8d8;
+      --text-dim: #7aaa88;
+      --text-muted: #3d6647;
+      --mono: 'DM Mono', monospace;
+      --sans: 'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 48px 48px;
+      opacity: 0.4;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Radial glow */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(63,168,95,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* NAV */
+    nav {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+    }
+
+    nav .inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--green-bright);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green-bright);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    .nav-tag {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 6rem 0 4rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.1s;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-label::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--green);
+    }
+
+    h1 {
+      font-family: var(--sans);
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+    }
+
+    h1 span {
+      color: var(--green-bright);
+    }
+
+    .hero-sub {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--text-dim);
+      max-width: 560px;
+      margin-bottom: 3rem;
+    }
+
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 3rem;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.35rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--text-muted);
+      background: var(--surface);
+    }
+
+    .badge.active {
+      border-color: var(--green-dim);
+      color: var(--green);
+      background: rgba(63,168,95,0.05);
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.3s;
+    }
+
+    /* SECTIONS */
+    .section {
+      padding: 2.5rem 0;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.4s;
+    }
+
+    .section + .section {
+      animation-delay: 0.5s;
+    }
+
+    .section-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .about-text {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: var(--text-dim);
+      max-width: 680px;
+    }
+
+    /* CARDS */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 0.5rem;
+    }
+
+    .card {
+      background: var(--bg);
+      padding: 1.75rem;
+      transition: background 0.2s;
+    }
+
+    .card:hover {
+      background: var(--surface);
+    }
+
+    .card-num {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.6rem;
+    }
+
+    .card-desc {
+      font-size: 0.8rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    /* STACK */
+    .stack-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .stack-item {
+      font-size: 0.78rem;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      background: var(--surface);
+      border-radius: 1px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .stack-item:hover {
+      border-color: var(--green-dim);
+      color: var(--green);
+    }
+
+    /* LINKS */
+    .links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
+    .link-btn {
+      font-size: 0.78rem;
+      letter-spacing: 0.05em;
+      padding: 0.6rem 1.4rem;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      text-decoration: none;
+      background: var(--surface);
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .link-btn:hover {
+      border-color: var(--green);
+      color: var(--green-bright);
+      background: var(--green-glow);
+    }
+
+    .link-btn.primary {
+      border-color: var(--green-dim);
+      color: var(--green);
+      background: rgba(63,168,95,0.06);
+    }
+
+    .link-btn.primary:hover {
+      background: rgba(63,168,95,0.14);
+    }
+
+    /* STATUS */
+    .status-bar {
+      margin-top: 3rem;
+      padding: 1rem 1.25rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.6s;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--green);
+      border-radius: 50%;
+      flex-shrink: 0;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* FOOTER */
+    footer {
+      margin-top: 5rem;
+      padding: 2rem 0;
+      border-top: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+    }
+
+    footer .inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    footer p {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--green); }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2.4rem; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="inner">
+      <div class="logo">
+        <div class="logo-dot"></div>
+        GreenRAG
+      </div>
+      <span class="nav-tag">CS 8903 · OMSCS · Summer 2026</span>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <section class="hero">
+      <div class="hero-label">Research Project</div>
+      <h1>Sustainable<br /><span>AI Infrastructure</span></h1>
+      <p class="hero-sub">
+        GreenRAG is a RAG-based web tool for assessing and optimizing the
+        environmental impact of cloud AI pipelines. Ask questions about your
+        infrastructure, get actionable sustainability recommendations.
+      </p>
+      <div class="hero-badges">
+        <span class="badge active">RAG Pipeline</span>
+        <span class="badge active">Sustainability</span>
+        <span class="badge active">Cloud AI</span>
+        <span class="badge">LangChain</span>
+        <span class="badge">AWS Bedrock</span>
+        <span class="badge">In Development</span>
+      </div>
+      <div class="links">
+        <a class="link-btn primary" href="https://github.gatech.edu/pgill37/greenrag" target="_blank" rel="noopener">
+          ↗ GitHub Repository
+        </a>
+        <a class="link-btn" href="https://www.overleaf.com/read/mjgbhdzydrgg#0bf39b" target="_blank" rel="noopener">
+          ↗ Research Paper (Overleaf)
+        </a>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+    <section class="section">
+      <div class="section-label">About</div>
+      <p class="about-text">
+        The rapid growth of cloud-based AI workloads has introduced significant energy
+        and carbon costs that are difficult for most teams to reason about holistically.
+        GreenRAG addresses this gap by providing a conversational interface — powered
+        by a retrieval-augmented generation pipeline — that ingests infrastructure
+        configurations and surfaces tailored optimization recommendations grounded in
+        current research and best practices.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="section-label">Research Questions</div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-num">RQ 01</div>
+          <div class="card-title">Design vs. Cost</div>
+          <div class="card-desc">How do RAG pipeline design choices — retrieval strategy, chunk size, model selection — affect computational energy cost?</div>
+        </div>
+        <div class="card">
+          <div class="card-num">RQ 02</div>
+          <div class="card-title">Optimization Gaps</div>
+          <div class="card-desc">What optimization strategies produce the most meaningful reductions in carbon footprint for production AI workloads?</div>
+        </div>
+        <div class="card">
+          <div class="card-num">RQ 03</div>
+          <div class="card-title">Accessibility</div>
+          <div class="card-desc">Can a RAG-powered tool surface actionable sustainability guidance without requiring deep infrastructure expertise?</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">Stack</div>
+      <div class="stack-grid">
+        <span class="stack-item">Python / FastAPI</span>
+        <span class="stack-item">LangChain</span>
+        <span class="stack-item">Vector Database</span>
+        <span class="stack-item">AWS Bedrock</span>
+        <span class="stack-item">React</span>
+        <span class="stack-item">Kubernetes</span>
+        <span class="stack-item">GitHub CI/CD</span>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-label">Researcher</div>
+      <p class="about-text" style="margin-bottom:1.25rem;">
+        Paramvir (Vick) Gill
+      </p>
+      <div class="links">
+        <a class="link-btn" href="https://www.linkedin.com/in/p-gill/" target="_blank" rel="noopener">↗ LinkedIn</a>
+        <a class="link-btn" href="https://utoronto.scholaris.ca/items/a6a7f3a3-4d8a-4018-b6ba-ea7e6c6d53e6" target="_blank" rel="noopener">↗ MASc Thesis</a>
+      </div>
+    </section>
+
+    <div class="status-bar">
+      <div class="status-dot"></div>
+      <span>Active development · Summer 2026 · CS 8903 CROCS Classic Track</span>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="inner">
+      <p>GreenRAG · CS 8903 · Georgia Institute of Technology</p>
+      <p><a href="https://github.gatech.edu/pgill37/greenrag" target="_blank" rel="noopener">GitHub</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Register service worker for PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
+  </script>
+
+</body>
+</html>
