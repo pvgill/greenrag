@@ -2,7 +2,7 @@
   "name": "GreenRAG",
   "short_name": "GreenRAG",
   "description": "A RAG-based tool for assessing and optimizing the sustainability of cloud AI infrastructure.",
-  "start_url": "/",
+  "start_url": "/greenrag/",
   "display": "standalone",
   "background_color": "#060e08",
   "theme_color": "#0a1a0f",
