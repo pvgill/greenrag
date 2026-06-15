@@ -40,7 +40,6 @@
       position: relative;
     }
 
-    /* Grid background */
     body::before {
       content: '';
       position: fixed;
@@ -54,7 +53,6 @@
       z-index: 0;
     }
 
-    /* Radial glow */
     body::after {
       content: '';
       position: fixed;
@@ -76,7 +74,6 @@
       z-index: 1;
     }
 
-    /* NAV */
     nav {
       padding: 1.5rem 0;
       border-bottom: 1px solid var(--border);
@@ -124,7 +121,6 @@
       text-transform: uppercase;
     }
 
-    /* HERO */
     .hero {
       padding: 6rem 0 4rem;
       opacity: 0;
@@ -165,9 +161,7 @@
       margin-bottom: 1.5rem;
     }
 
-    h1 span {
-      color: var(--green-bright);
-    }
+    h1 span { color: var(--green-bright); }
 
     .hero-sub {
       font-size: 0.95rem;
@@ -201,7 +195,6 @@
       background: rgba(63,168,95,0.05);
     }
 
-    /* DIVIDER */
     .divider {
       border: none;
       border-top: 1px solid var(--border);
@@ -210,16 +203,13 @@
       animation: fadeUp 0.8s ease forwards 0.3s;
     }
 
-    /* SECTIONS */
     .section {
       padding: 2.5rem 0;
       opacity: 0;
       animation: fadeUp 0.8s ease forwards 0.4s;
     }
 
-    .section + .section {
-      animation-delay: 0.5s;
-    }
+    .section + .section { animation-delay: 0.5s; }
 
     .section-label {
       font-size: 0.68rem;
@@ -246,7 +236,6 @@
       max-width: 680px;
     }
 
-    /* CARDS */
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -262,9 +251,7 @@
       transition: background 0.2s;
     }
 
-    .card:hover {
-      background: var(--surface);
-    }
+    .card:hover { background: var(--surface); }
 
     .card-num {
       font-size: 0.65rem;
@@ -287,7 +274,6 @@
       color: var(--text-muted);
     }
 
-    /* STACK */
     .stack-grid {
       display: flex;
       flex-wrap: wrap;
@@ -310,7 +296,6 @@
       color: var(--green);
     }
 
-    /* LINKS */
     .links {
       display: flex;
       gap: 1rem;
@@ -344,11 +329,8 @@
       background: rgba(63,168,95,0.06);
     }
 
-    .link-btn.primary:hover {
-      background: rgba(63,168,95,0.14);
-    }
+    .link-btn.primary:hover { background: rgba(63,168,95,0.14); }
 
-    /* STATUS */
     .status-bar {
       margin-top: 3rem;
       padding: 1rem 1.25rem;
@@ -372,7 +354,6 @@
       animation: pulse 2s ease-in-out infinite;
     }
 
-    /* FOOTER */
     footer {
       margin-top: 5rem;
       padding: 2rem 0;
@@ -392,17 +373,8 @@
       gap: 1rem;
     }
 
-    footer p {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-    }
-
-    footer a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
+    footer p { font-size: 0.72rem; color: var(--text-muted); }
+    footer a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
     footer a:hover { color: var(--green); }
 
     @media (max-width: 600px) {
@@ -487,6 +459,27 @@
     </section>
 
     <section class="section">
+      <div class="section-label">How It Works</div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-num">01</div>
+          <div class="card-title">Describe Your Infrastructure</div>
+          <div class="card-desc">Users describe their cloud AI setup through a conversational interface — compute resources, model types, retrieval strategy, and deployment configuration.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">02</div>
+          <div class="card-title">Retrieval & Analysis</div>
+          <div class="card-desc">GreenRAG retrieves relevant research and best practices from a curated knowledge base covering AI energy benchmarks, green computing frameworks, and cloud provider efficiency data.</div>
+        </div>
+        <div class="card">
+          <div class="card-num">03</div>
+          <div class="card-title">Sustainability Recommendations</div>
+          <div class="card-desc">The system generates tailored recommendations for reducing energy consumption and carbon footprint, grounded in retrieved sources and ranked by estimated impact.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
       <div class="section-label">Stack</div>
       <div class="stack-grid">
         <span class="stack-item">Python / FastAPI</span>
@@ -502,9 +495,7 @@
     <section class="section">
       <div class="section-label">Researcher</div>
       <p class="about-text" style="margin-bottom:1.25rem;">
-        Paramvir (Vick) Gill — Senior Software Engineer & OMSCS Student, AI Specialization.
-        Georgia Institute of Technology · Summer 2026.
-        Advised by Prof. Dante Ciolfi under the CROCS program.
+        Paramvir (Vick) Gill
       </p>
       <div class="links">
         <a class="link-btn" href="https://www.linkedin.com/in/p-gill/" target="_blank" rel="noopener">↗ LinkedIn</a>
@@ -527,10 +518,9 @@
   </footer>
 
   <script>
-    // Register service worker for PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
+        navigator.serviceWorker.register('/greenrag/sw.js').catch(() => {});
       });
     }
   </script>
