@@ -1,4 +1,4 @@
-const CACHE = 'greenrag-v1';
+const CACHE = 'greenrag-v2';
 const ASSETS = ['/greenrag/', '/greenrag/index.html', '/greenrag/manifest.json', '/greenrag/icon.svg'];
 
 self.addEventListener('install', e => {
