@@ -1,0 +1,25 @@
+Cloud Infrastructure Efficiency for AI Workloads
+
+Cloud providers have made significant investments in improving the energy efficiency of their data center infrastructure, driven by both cost pressure and sustainability commitments. For AI workloads in particular, the choice of cloud region, instance type, and scheduling strategy can have a substantial impact on carbon emissions.
+
+Power Usage Effectiveness (PUE) is the primary data center efficiency metric. It is defined as total facility energy divided by IT equipment energy. A PUE of 1.0 is theoretically perfect; practical minimums for hyperscalers are around 1.06–1.12. Google, Microsoft Azure, and AWS have all published regional PUE figures and have committed to operating on 24/7 carbon-free energy (CFE) in some regions by the late 2020s.
+
+Hardware accelerator choice strongly influences energy per inference. The NVIDIA A100 80GB SXM delivers approximately 312 TFLOPS (FP16) at a TDP of 400W, yielding ~780 GFLOPS/W. The H100 SXM5 improves this to ~990 TFLOPS FP16 at 700W TDP, or ~1414 GFLOPS/W — roughly 1.8x better energy efficiency. For transformer-based workloads, Tensor Core utilization and memory bandwidth (HBM3 vs HBM2e) also affect actual throughput.
+
+Spot and preemptible instances can be used for batch inference and embedding jobs, reducing cost and allowing the cloud provider to schedule work during periods of grid surplus (which correlates with higher renewable availability). AWS Spot, GCP Preemptible, and Azure Spot VMs all support this pattern.
+
+Region selection is critical. Electricity grid carbon intensity (measured in gCO2eq/kWh) varies dramatically:
+- US-WEST-2 (Oregon, AWS): ~100–130 gCO2eq/kWh (high hydro + wind)
+- US-EAST-1 (Virginia, AWS): ~250–350 gCO2eq/kWh (mixed grid)
+- EU-WEST-1 (Ireland, AWS): ~200–280 gCO2eq/kWh
+- AP-SOUTHEAST-1 (Singapore, AWS): ~380–430 gCO2eq/kWh (gas-heavy)
+
+Sustainable cloud AI infrastructure best practices:
+1. Deploy in low-carbon regions whenever latency constraints permit.
+2. Use the highest-efficiency GPU generation available (H100 > A100 > V100).
+3. Enable autoscaling with minimum replica count of zero during idle periods.
+4. Leverage managed inference endpoints that handle batching automatically (e.g., AWS SageMaker, Azure ML Managed Endpoints).
+5. Monitor per-request energy using cloud provider carbon footprint dashboards or third-party tools.
+6. Apply model compression (distillation, pruning, quantization) to reduce FLOPs per inference.
+
+The Shift Project (2019) estimated that video streaming accounts for 60% of global internet traffic and 300 MtCO2/year. AI inference is on a trajectory to reach comparable scale. Proactive measurement and optimization at the infrastructure layer is essential to prevent AI services from becoming a dominant source of digital-sector emissions.

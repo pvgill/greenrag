@@ -1,0 +1,38 @@
+Measuring and Reporting the Carbon Footprint of Machine Learning
+
+Accurate measurement of machine learning carbon footprints requires accounting for both direct energy consumption and the carbon intensity of the energy source. Henderson et al. (2020) proposed a standardized framework for reporting ML experiment energy and emissions, arguing that the field lacks consistent methodology, making cross-paper comparisons impossible.
+
+The carbon footprint of an ML workload is computed as:
+  CO2eq = Energy (kWh) × Carbon Intensity (gCO2eq/kWh) / 1000
+
+Energy is measured as the sum of CPU, GPU, and DRAM power draw integrated over the experiment duration. Carbon intensity is the marginal emission factor of the electricity grid at the time and location of computation.
+
+Key sources of measurement uncertainty include:
+- GPU power draw varies with utilization (idle ~50W vs peak ~400W for A100)
+- DRAM power is often underreported but can be 10–20% of GPU power at large batch sizes
+- Network I/O for distributed training adds indirect energy costs
+- Cooling overhead (captured by PUE) is often omitted from reported figures
+
+Software tools for emissions tracking:
+- Codecarbon (Python): wraps NVML and RAPL, computes kgCO2eq per experiment
+- Carbontracker (Python): designed for deep learning training loops
+- ML CO2 Impact Calculator (Lacoste et al., 2019): a web-based estimator
+- MLCO2: provides per-cloud-region carbon intensity lookup tables
+
+Strubel et al. (2019) coined "Green AI" to describe the pursuit of computationally efficient ML research that reports energy costs alongside accuracy metrics. They found that NLP model energy costs had grown by 300,000x between 2012 and 2019 (from AlexNet to large Transformers), while benchmark performance improvements were far more modest.
+
+Patterson et al. (2021) analyzed training costs for landmark models including GPT-3, T5, and Megatron-LM, finding that architectural choices (sparse attention, mixture of experts) and hardware selection (TPUv4 vs older hardware) could reduce training emissions by up to 100x for equivalent task performance.
+
+For inference-specific accounting, the relevant metric is energy per query (Joules/query) or CO2eq per 1000 queries. This depends on:
+- Tokens generated per query (longer outputs = more FLOPs)
+- Model size in parameters (determines memory footprint and compute per forward pass)
+- Batch size (larger batches amortize fixed overhead)
+- Hardware efficiency (FLOPS/W)
+- Grid carbon intensity at time of serving
+
+Best practices for carbon-aware ML systems:
+1. Report energy and emissions alongside accuracy in all publications.
+2. Use region-specific, time-varying carbon intensity data rather than annual averages.
+3. Profile both training and inference; report both separately.
+4. Consider the full lifecycle: hardware manufacturing, data center construction, and end-of-life disposal contribute "embodied carbon" on top of operational emissions.
+5. Prefer renewable energy-powered infrastructure and advocate for 24/7 carbon-free energy commitments from cloud providers.

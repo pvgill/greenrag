@@ -1,0 +1,31 @@
+Retrieval-Augmented Generation for Sustainability Assessment
+
+Retrieval-Augmented Generation (RAG) combines a retrieval component — typically a dense vector search over a curated corpus — with a generative language model to produce grounded, citation-backed responses. In the context of sustainability assessment, RAG enables a system to answer questions about infrastructure configurations by retrieving relevant research findings and synthesizing actionable recommendations.
+
+The GreenRAG architecture applies this pattern to the domain of cloud AI infrastructure sustainability. Given a natural-language description of an infrastructure setup (e.g., "16x A100 GPUs in us-east-1 running continuous LLM inference"), the system retrieves passages from a corpus of sustainability research and produces recommendations with citations to source documents.
+
+Architecture components:
+
+1. Document Corpus: A curated collection of research papers, technical reports, and guidelines covering energy efficiency, carbon footprinting, hardware comparison, and cloud provider sustainability policies. Documents are pre-processed into plain text and stored in the corpus directory.
+
+2. Chunking Layer: Documents are split into overlapping fixed-size chunks (e.g., 512 tokens with 64-token overlap) using a recursive character splitter. Chunking ensures that retrieved passages are small enough to fit in the language model's context window while preserving sufficient local context.
+
+3. Embedding Model: Each chunk is encoded into a dense vector using a sentence transformer (e.g., all-MiniLM-L6-v2, 384 dimensions). The embedding model is run locally to avoid external API costs and latency.
+
+4. Vector Index: Chunk embeddings are stored in ChromaDB, a persistent open-source vector database that supports cosine similarity search. ChromaDB's HNSW index enables sub-linear approximate nearest-neighbor retrieval.
+
+5. Retrieval: At query time, the infrastructure description is embedded using the same model, and the top-k most similar chunks are retrieved by cosine similarity.
+
+6. Generation: Retrieved chunks are formatted as context and passed to a language model along with the query to generate a structured sustainability assessment with references.
+
+Evaluation methodology:
+
+Retrieval quality is measured using Precision@k (P@k): the fraction of the top-k retrieved passages that are judged relevant to the query by a human annotator or reference set. A P@5 of 0.8 means 4 out of 5 retrieved passages are relevant.
+
+For generation quality, ROUGE-L and BERTScore are used to compare generated recommendations against reference answers. Factual grounding is measured by checking whether claims in the generated output are supported by retrieved passages.
+
+Advantages of RAG over pure parametric generation for this domain:
+- Corpus is updatable without retraining the language model
+- Every recommendation is traceable to a specific source document
+- Domain-specific knowledge (e.g., latest PUE figures, new GPU releases) can be added by updating the corpus
+- Retrieval failures are detectable and auditable

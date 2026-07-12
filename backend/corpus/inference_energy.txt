@@ -1,0 +1,21 @@
+Inference-Layer Energy Consumption in Large Language Models
+
+The energy cost of deploying large language models (LLMs) at inference time has emerged as a critical but underreported dimension of AI sustainability. While training costs receive significant attention due to their one-time, large-scale nature, serving costs accumulate continuously and at scale can dominate the total lifetime energy budget of a deployed model.
+
+Luccioni et al. (2023) conducted a detailed empirical accounting of inference-layer emissions for a 176-billion parameter model, finding that a single generation request can consume energy equivalent to charging a smartphone. When aggregated across millions of daily queries, the serving-time carbon footprint rivals that of training. This finding motivates a shift in sustainability evaluation toward inference-layer benchmarking.
+
+Key factors that drive inference energy include model size (parameter count), hardware accelerator efficiency, batch size, token generation length, and the thermal and power management characteristics of the data center. GPUs with higher TFLOPS-per-watt ratios (e.g., NVIDIA H100 vs A100) can reduce per-token energy substantially. Similarly, quantization techniques (INT8, INT4) can reduce memory bandwidth pressure and thus energy without proportional quality loss.
+
+Power Usage Effectiveness (PUE) of the host data center provides another multiplier: a PUE of 1.5 means 50% overhead energy for cooling and distribution on top of IT equipment load. Hyperscaler data centers have achieved PUEs as low as 1.1, while older facilities may exceed 2.0.
+
+Recommendations for reducing inference-layer energy:
+1. Select hardware with strong TFLOPS-per-watt efficiency ratings.
+2. Apply model quantization (INT8 or lower) where accuracy permits.
+3. Use batched inference to maximize GPU utilization.
+4. Deploy in regions with low-carbon electricity grids (e.g., high renewable fraction).
+5. Prefer data centers with PUE below 1.2.
+6. Enable dynamic scaling to avoid idle GPU power draw during low-traffic periods.
+
+Carbon intensity of the electricity grid at the deployment region is a multiplicative factor on all energy figures. A model inference workload in a coal-heavy grid may emit 10x more CO2 per kWh than the same workload running in a hydro- or wind-powered region. Carbon-aware scheduling — routing inference traffic to low-carbon regions during off-peak renewable generation windows — is an emerging technique to reduce grid-level emissions without changing model behavior.
+
+Tools for measuring inference energy include NVIDIA's NVML (NVIDIA Management Library) for GPU power draw, Intel's RAPL (Running Average Power Limit) for CPU and DRAM, and Codecarbon, a Python library that wraps hardware counters to report emissions in kg CO2-equivalent.
