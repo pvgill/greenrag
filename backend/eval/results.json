@@ -1,0 +1,183 @@
+{
+  "P@1": 1.0,
+  "P@3": 0.8667,
+  "P@5": 0.88,
+  "per_query": [
+    {
+      "id": "q1",
+      "query": "How can I reduce energy consumption during LLM inference?",
+      "retrieved": [
+        {
+          "source": "inference_energy.txt",
+          "score": 0.643,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 0.5401,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 0.5378,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 0.4557,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 0.4401,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 1.0,
+      "P@5": 1.0
+    },
+    {
+      "id": "q2",
+      "query": "Which cloud region has the lowest carbon intensity for AI workloads?",
+      "retrieved": [
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 0.6896,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 0.6426,
+          "relevant": true
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 0.5472,
+          "relevant": false
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 0.5244,
+          "relevant": false
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 0.5222,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 0.6666666666666666,
+      "P@5": 0.6
+    },
+    {
+      "id": "q3",
+      "query": "How do I measure the carbon footprint of a machine learning model?",
+      "retrieved": [
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 0.7837,
+          "relevant": true
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 0.6522,
+          "relevant": true
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 0.6446,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 0.5974,
+          "relevant": true
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 0.5527,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 1.0,
+      "P@5": 1.0
+    },
+    {
+      "id": "q4",
+      "query": "What GPU hardware should I choose to minimize energy per inference token?",
+      "retrieved": [
+        {
+          "source": "inference_energy.txt",
+          "score": 0.7196,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 0.6936,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 0.5671,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 0.5653,
+          "relevant": true
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 0.4926,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 1.0,
+      "P@5": 1.0
+    },
+    {
+      "id": "q5",
+      "query": "How does retrieval-augmented generation support sustainability assessment?",
+      "retrieved": [
+        {
+          "source": "rag_sustainability_assessment.txt",
+          "score": 0.7455,
+          "relevant": true
+        },
+        {
+          "source": "rag_sustainability_assessment.txt",
+          "score": 0.6238,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 0.4979,
+          "relevant": false
+        },
+        {
+          "source": "rag_sustainability_assessment.txt",
+          "score": 0.4286,
+          "relevant": true
+        },
+        {
+          "source": "rag_sustainability_assessment.txt",
+          "score": 0.3791,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 0.6666666666666666,
+      "P@5": 0.8
+    }
+  ],
+  "n_queries": 5,
+  "k_values": [
+    1,
+    3,
+    5
+  ]
+}
