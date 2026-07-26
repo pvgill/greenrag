@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field
 app = FastAPI(
     title="GreenRAG API",
     description="RAG-based sustainability assessment for cloud AI infrastructure.",
-    version="0.3.0",
+    version="0.4.0",
 )
 
 app.add_middleware(
@@ -39,6 +39,7 @@ class RetrievedPassage(BaseModel):
 
 class AssessResponse(BaseModel):
     query: str
+    recommendations: list[str]
     sources: list[RetrievedPassage]
     status: str
 
@@ -60,27 +61,32 @@ def index():
 @app.post("/assess", response_model=AssessResponse)
 def assess(request: AssessRequest):
     """
-    Accept a natural-language infrastructure description and return the
-    top-k most relevant research passages ranked by cosine similarity.
+    Accept a natural-language infrastructure description, retrieve the
+    top-k most relevant research passages, and return grounded
+    sustainability recommendations.
     """
     from rag.pipeline import retrieve
+    from rag.recommend import generate_recommendations
 
     try:
         passages = retrieve(request.description, k=request.top_k)
     except Exception as exc:
         raise HTTPException(
             status_code=503,
-            detail=f"Retrieval failed — ensure the index has been built via POST /index. Error: {exc}",
+            detail=f"Retrieval failed. Ensure the index is built via POST /index. Error: {exc}",
         ) from exc
 
     if not passages:
         raise HTTPException(
             status_code=404,
-            detail="No passages retrieved. The index may be empty — call POST /index first.",
+            detail="No passages retrieved. The index may be empty; call POST /index first.",
         )
+
+    recommendations = generate_recommendations(request.description, passages)
 
     return AssessResponse(
         query=request.description,
+        recommendations=recommendations,
         sources=[RetrievedPassage(**p) for p in passages],
         status="ok",
     )
