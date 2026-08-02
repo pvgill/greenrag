@@ -1,0 +1,23 @@
+Model Quantization for Energy-Efficient LLM Inference
+
+Quantization reduces the numerical precision of model weights and activations, trading a small amount of model quality for substantial reductions in memory bandwidth, storage footprint, and energy consumption. For large language models deployed at inference time, quantization is one of the highest-leverage techniques for reducing serving-layer energy costs without modifying the model architecture or hardware.
+
+Full-precision (FP32) inference stores each weight as a 32-bit floating point value. Most production deployments use FP16 or BF16 as the default, halving memory bandwidth requirements with negligible quality loss on most tasks. INT8 quantization takes this further, representing weights and activations as 8-bit integers. For transformer-based LLMs, INT8 quantization typically reduces memory bandwidth pressure by 2x compared to FP16, with a quality degradation of less than 1% on standard benchmarks when applied correctly.
+
+INT4 quantization, used in techniques such as GPTQ and AWQ, reduces weights to 4-bit representation. This enables 4x bandwidth reduction compared to FP16, allowing models that previously required multiple GPUs to run on a single GPU, dramatically reducing energy per inference. GPTQ (Frantar et al., 2022) demonstrated that 4-bit quantization of 175B parameter models produces negligible perplexity degradation on language modeling benchmarks. AWQ (Lin et al., 2023) further improved 4-bit quantization by identifying and protecting the small fraction of weights that most affect output quality.
+
+Energy implications of quantization:
+- INT8 vs FP16: approximately 1.5-2x reduction in GPU memory bandwidth, translating to proportional energy savings on bandwidth-bound inference workloads.
+- INT4 vs FP16: approximately 3-4x reduction in memory bandwidth; additionally enables running larger models on fewer GPUs, reducing total hardware energy draw.
+- Activation quantization (quantizing intermediate tensors in addition to weights) provides further savings but is more sensitive to quality degradation and requires careful calibration.
+
+Quantization-aware training (QAT) produces models that are optimized for low-precision inference from the start, generally outperforming post-training quantization (PTQ) in quality at equivalent bit widths. However, QAT requires access to training data and compute, making PTQ approaches like GPTQ and AWQ more practical for most deployment scenarios.
+
+Practical guidance for quantization:
+1. Start with INT8 PTQ as the default for production deployments; it is supported by major inference frameworks (vLLM, TGI, TensorRT-LLM) with minimal configuration.
+2. Use INT4 (GPTQ or AWQ) when memory constraints or energy budgets are tight and a small quality tradeoff is acceptable.
+3. Benchmark quality on your specific task before deploying quantized models; sensitivity varies by task type (e.g., code generation is more sensitive than text classification).
+4. Combine quantization with batching: INT8 inference at batch size 32 is significantly more energy-efficient than FP16 inference at batch size 1.
+5. Use tools such as AutoGPTQ, llama.cpp, or bitsandbytes to apply PTQ without modifying model architecture.
+
+The energy savings from quantization are multiplicative with other optimizations. An INT8 model running on an H100 GPU with automatic batching in a low-carbon cloud region can achieve an order-of-magnitude reduction in carbon per query compared to an FP32 model on an older GPU in a coal-powered region.

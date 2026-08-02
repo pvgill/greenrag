@@ -1,41 +1,50 @@
 {
-  "P@1": 1.0,
-  "P@3": 0.8667,
-  "P@5": 0.88,
-  "per_query": [
+  "n_queries": 10,
+  "k_values": [
+    1,
+    3,
+    5
+  ],
+  "dense_P@1": 0.9,
+  "bm25_P@1": 1.0,
+  "dense_P@3": 0.7667,
+  "bm25_P@3": 0.8,
+  "dense_P@5": 0.84,
+  "bm25_P@5": 0.74,
+  "dense_per_query": [
     {
       "id": "q1",
       "query": "How can I reduce energy consumption during LLM inference?",
       "retrieved": [
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 0.6468,
+          "relevant": false
+        },
         {
           "source": "inference_energy.txt",
           "score": 0.643,
           "relevant": true
         },
         {
+          "source": "model_quantization.txt",
+          "score": 0.6217,
+          "relevant": false
+        },
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 0.5538,
+          "relevant": false
+        },
+        {
           "source": "inference_energy.txt",
           "score": 0.5401,
           "relevant": true
-        },
-        {
-          "source": "inference_energy.txt",
-          "score": 0.5378,
-          "relevant": true
-        },
-        {
-          "source": "inference_energy.txt",
-          "score": 0.4557,
-          "relevant": true
-        },
-        {
-          "source": "inference_energy.txt",
-          "score": 0.4401,
-          "relevant": true
         }
       ],
-      "P@1": 1.0,
-      "P@3": 1.0,
-      "P@5": 1.0
+      "P@1": 0.0,
+      "P@3": 0.3333333333333333,
+      "P@5": 0.4
     },
     {
       "id": "q2",
@@ -52,24 +61,24 @@
           "relevant": true
         },
         {
-          "source": "carbon_footprint_ml.txt",
-          "score": 0.5472,
-          "relevant": false
+          "source": "carbon_aware_scheduling.txt",
+          "score": 0.6244,
+          "relevant": true
         },
         {
-          "source": "carbon_footprint_ml.txt",
-          "score": 0.5244,
-          "relevant": false
+          "source": "carbon_aware_scheduling.txt",
+          "score": 0.5614,
+          "relevant": true
         },
         {
-          "source": "cloud_infrastructure_efficiency.txt",
-          "score": 0.5222,
+          "source": "carbon_aware_scheduling.txt",
+          "score": 0.5481,
           "relevant": true
         }
       ],
       "P@1": 1.0,
-      "P@3": 0.6666666666666666,
-      "P@5": 0.6
+      "P@3": 1.0,
+      "P@5": 1.0
     },
     {
       "id": "q3",
@@ -110,6 +119,11 @@
       "query": "What GPU hardware should I choose to minimize energy per inference token?",
       "retrieved": [
         {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 0.7329,
+          "relevant": true
+        },
+        {
           "source": "inference_energy.txt",
           "score": 0.7196,
           "relevant": true
@@ -120,18 +134,13 @@
           "relevant": true
         },
         {
-          "source": "cloud_infrastructure_efficiency.txt",
-          "score": 0.5671,
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 0.6442,
           "relevant": true
         },
         {
-          "source": "inference_energy.txt",
-          "score": 0.5653,
-          "relevant": true
-        },
-        {
-          "source": "carbon_footprint_ml.txt",
-          "score": 0.4926,
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 0.6332,
           "relevant": true
         }
       ],
@@ -172,12 +181,518 @@
       "P@1": 1.0,
       "P@3": 0.6666666666666666,
       "P@5": 0.8
+    },
+    {
+      "id": "q6",
+      "query": "How does INT8 quantization reduce energy consumption during inference?",
+      "retrieved": [
+        {
+          "source": "model_quantization.txt",
+          "score": 0.7397,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 0.6951,
+          "relevant": true
+        },
+        {
+          "source": "model_quantization.txt",
+          "score": 0.6608,
+          "relevant": true
+        },
+        {
+          "source": "model_quantization.txt",
+          "score": 0.6297,
+          "relevant": true
+        },
+        {
+          "source": "model_quantization.txt",
+          "score": 0.6112,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 1.0,
+      "P@5": 1.0
+    },
+    {
+      "id": "q7",
+      "query": "What is the energy efficiency difference between A100 and H100 GPUs?",
+      "retrieved": [
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 0.7566,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 0.634,
+          "relevant": false
+        },
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 0.625,
+          "relevant": true
+        },
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 0.5946,
+          "relevant": true
+        },
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 0.5611,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 0.6666666666666666,
+      "P@5": 0.8
+    },
+    {
+      "id": "q8",
+      "query": "How can I use carbon intensity data to schedule ML workloads more sustainably?",
+      "retrieved": [
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 0.6983,
+          "relevant": true
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 0.6821,
+          "relevant": true
+        },
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 0.6728,
+          "relevant": true
+        },
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 0.6198,
+          "relevant": true
+        },
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 0.6099,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 1.0,
+      "P@5": 1.0
+    },
+    {
+      "id": "q9",
+      "query": "What software tools are available to monitor GPU power consumption?",
+      "retrieved": [
+        {
+          "source": "inference_energy.txt",
+          "score": 0.723,
+          "relevant": true
+        },
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 0.559,
+          "relevant": false
+        },
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 0.5061,
+          "relevant": false
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 0.4854,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 0.4707,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 0.3333333333333333,
+      "P@5": 0.6
+    },
+    {
+      "id": "q10",
+      "query": "How does Power Usage Effectiveness affect my cloud AI deployment carbon footprint?",
+      "retrieved": [
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 0.7497,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 0.6849,
+          "relevant": true
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 0.5887,
+          "relevant": false
+        },
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 0.559,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 0.5536,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 0.6666666666666666,
+      "P@5": 0.8
     }
   ],
-  "n_queries": 5,
-  "k_values": [
-    1,
-    3,
-    5
+  "bm25_per_query": [
+    {
+      "id": "q1",
+      "query": "How can I reduce energy consumption during LLM inference?",
+      "retrieved": [
+        {
+          "source": "inference_energy.txt",
+          "score": 5.8149,
+          "relevant": true
+        },
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 5.2888,
+          "relevant": false
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 4.372,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 4.2303,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 3.961,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 0.6666666666666666,
+      "P@5": 0.8
+    },
+    {
+      "id": "q2",
+      "query": "Which cloud region has the lowest carbon intensity for AI workloads?",
+      "retrieved": [
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 10.1643,
+          "relevant": true
+        },
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 8.6413,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 8.4645,
+          "relevant": true
+        },
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 7.9333,
+          "relevant": true
+        },
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 7.0684,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 1.0,
+      "P@5": 1.0
+    },
+    {
+      "id": "q3",
+      "query": "How do I measure the carbon footprint of a machine learning model?",
+      "retrieved": [
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 15.0658,
+          "relevant": true
+        },
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 11.7126,
+          "relevant": false
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 6.3622,
+          "relevant": true
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 6.2083,
+          "relevant": true
+        },
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 5.3218,
+          "relevant": false
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 0.6666666666666666,
+      "P@5": 0.6
+    },
+    {
+      "id": "q4",
+      "query": "What GPU hardware should I choose to minimize energy per inference token?",
+      "retrieved": [
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 8.5176,
+          "relevant": true
+        },
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 6.8497,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 4.9056,
+          "relevant": true
+        },
+        {
+          "source": "model_quantization.txt",
+          "score": 4.7141,
+          "relevant": false
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 4.6989,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 1.0,
+      "P@5": 0.8
+    },
+    {
+      "id": "q5",
+      "query": "How does retrieval-augmented generation support sustainability assessment?",
+      "retrieved": [
+        {
+          "source": "rag_sustainability_assessment.txt",
+          "score": 10.2289,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 3.9159,
+          "relevant": false
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 3.5442,
+          "relevant": false
+        },
+        {
+          "source": "rag_sustainability_assessment.txt",
+          "score": 2.456,
+          "relevant": true
+        },
+        {
+          "source": "rag_sustainability_assessment.txt",
+          "score": 2.1765,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 0.3333333333333333,
+      "P@5": 0.6
+    },
+    {
+      "id": "q6",
+      "query": "How does INT8 quantization reduce energy consumption during inference?",
+      "retrieved": [
+        {
+          "source": "inference_energy.txt",
+          "score": 5.1625,
+          "relevant": true
+        },
+        {
+          "source": "model_quantization.txt",
+          "score": 4.5817,
+          "relevant": true
+        },
+        {
+          "source": "inference_energy.txt",
+          "score": 4.2303,
+          "relevant": true
+        },
+        {
+          "source": "model_quantization.txt",
+          "score": 4.216,
+          "relevant": true
+        },
+        {
+          "source": "model_quantization.txt",
+          "score": 4.0236,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 1.0,
+      "P@5": 1.0
+    },
+    {
+      "id": "q7",
+      "query": "What is the energy efficiency difference between A100 and H100 GPUs?",
+      "retrieved": [
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 10.5215,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 6.1336,
+          "relevant": false
+        },
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 6.0939,
+          "relevant": true
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 5.7249,
+          "relevant": false
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 5.0943,
+          "relevant": false
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 0.6666666666666666,
+      "P@5": 0.4
+    },
+    {
+      "id": "q8",
+      "query": "How can I use carbon intensity data to schedule ML workloads more sustainably?",
+      "retrieved": [
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 8.2919,
+          "relevant": true
+        },
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 7.5591,
+          "relevant": true
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 7.4571,
+          "relevant": true
+        },
+        {
+          "source": "carbon_aware_scheduling.txt",
+          "score": 6.7937,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 6.4577,
+          "relevant": false
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 1.0,
+      "P@5": 0.8
+    },
+    {
+      "id": "q9",
+      "query": "What software tools are available to monitor GPU power consumption?",
+      "retrieved": [
+        {
+          "source": "inference_energy.txt",
+          "score": 7.7353,
+          "relevant": true
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 6.6945,
+          "relevant": true
+        },
+        {
+          "source": "hardware_efficiency_benchmarks.txt",
+          "score": 6.1462,
+          "relevant": false
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 5.7901,
+          "relevant": false
+        },
+        {
+          "source": "carbon_footprint_ml.txt",
+          "score": 4.3361,
+          "relevant": true
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 0.6666666666666666,
+      "P@5": 0.6
+    },
+    {
+      "id": "q10",
+      "query": "How does Power Usage Effectiveness affect my cloud AI deployment carbon footprint?",
+      "retrieved": [
+        {
+          "source": "inference_energy.txt",
+          "score": 8.4522,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 7.1901,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 6.0409,
+          "relevant": true
+        },
+        {
+          "source": "cloud_infrastructure_efficiency.txt",
+          "score": 4.2307,
+          "relevant": true
+        },
+        {
+          "source": "model_quantization.txt",
+          "score": 4.2237,
+          "relevant": false
+        }
+      ],
+      "P@1": 1.0,
+      "P@3": 1.0,
+      "P@5": 0.8
+    }
   ]
 }

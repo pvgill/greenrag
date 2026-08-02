@@ -1,0 +1,31 @@
+GPU Hardware Energy Efficiency Benchmarks for LLM Inference
+
+Selecting the right GPU hardware is one of the most impactful decisions for reducing the energy footprint of LLM inference. Hardware generations vary significantly in energy efficiency, measured as useful compute per watt (TFLOPS/W) or more practically as tokens generated per joule for a given model and batch size.
+
+NVIDIA A100 (80GB SXM): 312 TFLOPS FP16, 400W TDP. At full utilization for LLM inference, typical energy consumption is approximately 0.4-0.6 Wh per 1000 generated tokens for a 7B parameter model, depending on batch size. The A100 was the dominant training and inference GPU from 2020-2023 and remains widely available in cloud spot markets.
+
+NVIDIA H100 (80GB SXM5): ~990 TFLOPS FP16 (with sparsity), 700W TDP. Despite higher absolute power draw, the H100 delivers approximately 3x the throughput per watt of the A100 for transformer workloads due to Transformer Engine optimizations and HBM3 memory. For LLM inference, the H100 reduces energy per token by 50-65% compared to the A100 at equivalent batch sizes. H100 NVL (connected pairs) further improves efficiency for large model serving.
+
+NVIDIA A10G (24GB): 31.2 TFLOPS FP16, 150W TDP. The A10G is optimized for inference rather than training, offering strong energy efficiency for smaller models (up to 13B parameters without quantization, up to 34B with INT4). At 150W TDP it consumes less than half the power of an A100, making it cost-effective for always-on single-model endpoints.
+
+NVIDIA L4 (24GB): 30.3 TFLOPS FP16, 72W TDP. The L4 is the most energy-efficient NVIDIA data center GPU for inference-only workloads, designed explicitly for serving rather than training. At 72W TDP it achieves approximately 0.4 TFLOPS/W on FP16 workloads. For batch inference of models up to 13B parameters, the L4 offers competitive tokens/joule ratios and is available on Google Cloud (g2-standard instances).
+
+Google TPU v4: ~275 TFLOPS BF16 per chip, ~170W per chip. Google's TPU v4 pods provide high interconnect bandwidth for large model sharding and are optimized for BF16/INT8 inference. In Google's data centers (PUE ~1.1, high renewable fraction), TPU v4 inference can have among the lowest carbon footprints per token of any available accelerator.
+
+Key comparisons (approximate, 7B model, batch size 16, FP16):
+
+| GPU       | TDP (W) | Tokens/sec | Energy/1K tokens (Wh) |
+|-----------|---------|------------|----------------------|
+| A100 SXM  | 400     | 1,800      | 0.22                 |
+| H100 SXM  | 700     | 5,500      | 0.13                 |
+| A10G      | 150     | 600        | 0.25                 |
+| L4        | 72      | 280        | 0.26                 |
+
+Note: tokens/sec scales with batch size; the above represents moderate utilization. At low utilization, all GPUs consume substantial idle power, making autoscaling and scale-to-zero critical for energy efficiency.
+
+Hardware selection guidance:
+1. For new deployments, H100 offers the best energy efficiency at scale despite higher upfront cost.
+2. For cost-sensitive inference of smaller models, L4 or A10G minimize energy per dollar.
+3. Avoid running inference on A100s or V100s if H100s or L4s are available in your target region.
+4. Hardware utilization matters as much as hardware selection: a well-utilized A10G at 80% GPU utilization is more energy-efficient than an idle H100.
+5. Monitor GPU utilization continuously using NVIDIA Management Library (NVML) or cloud provider dashboards; sustained utilization below 30% indicates over-provisioning.

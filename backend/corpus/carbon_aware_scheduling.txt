@@ -1,0 +1,28 @@
+Carbon-Aware Scheduling for Machine Learning Workloads
+
+Carbon-aware scheduling is the practice of timing and locating computational workloads to coincide with periods and places where electricity generation has a lower carbon intensity. For machine learning workloads, which often involve substantial and predictable compute jobs, carbon-aware scheduling represents a high-leverage intervention that requires no changes to model architecture or hardware.
+
+The carbon intensity of electricity grids, measured in grams of CO2-equivalent per kilowatt-hour (gCO2eq/kWh), varies by a factor of four or more across cloud regions and by 30-50% within a single region over the course of a day. These variations are driven primarily by the mix of generation sources: regions with high hydroelectric, wind, or solar capacity have consistently lower carbon intensity, while coal- and gas-dependent grids have higher and more variable intensity.
+
+Two primary scheduling strategies exploit this variability:
+
+1. Geographic routing: Dispatch workloads to the cloud region with the lowest current carbon intensity, subject to latency and data residency constraints. For interactive inference, the eligible region set is typically bounded by a round-trip latency limit (e.g., 150ms). For batch workloads with no interactive user, geographic routing can be applied globally. Dodge et al. (2022) showed that grid carbon intensity varies by a factor of 4-5x across AWS regions, creating substantial reduction opportunity for geographically flexible workloads.
+
+2. Temporal deferral: Delay batch workloads to execute during low-carbon windows within a deadline constraint. Solar generation creates predictable midday low-carbon windows in sun-rich regions; wind patterns create less predictable but forecast-able low-carbon periods in wind-heavy regions. Carbon intensity forecasts are available from the Electricity Maps API and WattTime API, both of which provide hourly forecasts up to 24-48 hours ahead.
+
+Practical implementation:
+
+For temporal deferral, the simplest implementation is a wrapper around a job queue that queries a carbon intensity API and defers job execution if the current intensity exceeds a threshold, subject to a maximum deferral time equal to the job's SLO deadline. More sophisticated implementations use forecast data to identify the optimal execution window within the deadline.
+
+For geographic routing, cloud providers expose region selection at instance launch time or, for multi-region architectures, at the load balancer or API gateway level. Routing logic that incorporates real-time carbon intensity data can be implemented as a lightweight middleware component.
+
+Tools and data sources:
+- Electricity Maps API: real-time and forecast carbon intensity for 50+ grid zones globally
+- WattTime API: marginal emissions factor data, useful for incremental workload decisions
+- Google Cloud Carbon Footprint: per-project carbon reporting including region-level intensity
+- AWS Customer Carbon Footprint Tool: monthly carbon reporting by service and region
+- Codecarbon Python library: per-experiment carbon tracking using hardware power counters and grid intensity lookup
+
+Studies of carbon-aware scheduling at Google's data centers (Radovanovic et al., 2023) reported 15% average carbon reduction for flexible batch workloads with no change in job completion time. For ML inference workloads with batch components (e.g., offline embedding generation, batch classification, scheduled fine-tuning runs), similar or greater savings are achievable given the flexibility of these workloads.
+
+Carbon-aware scheduling is most effective when combined with other efficiency measures. A quantized model running on an efficient GPU in a low-carbon region during a low-intensity window achieves multiplicative reductions compared to an unoptimized baseline.
